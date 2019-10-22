@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+	</head>
+	<body>
+		
+	</body>
+	<script type="text/javascript">
+		// var request = window.indexedDB.open('my-database', 1);
+		// console.log(request);
+		
+		// 该方法接收两个参数，第一个是字符串，表示数据库名字，如果指定的数据库不存在的话，就会创建该数据库。 
+		// 地热个参数是一个整数，表示数据库的版本。如果省略第二个参数，如果新建数据库，默认为1，如果打开已有的数据库，默认就会是当前的版本 
+		// indexedDb.open（）方法返回的事一个IDBRequest对象，代表一个请求链接数据库的请求对象。该对象通过三种事件：onerror、onsuccess、onupgradeneeded处理打开数据库的操作结果。
+		// 我们可以通过监听请求对象onsuccess和onerror事件来定义连接成功或失败需要执行的方法 
+		
+		// 数据库的版本号更改为大于当前的数据库的版本才会被执行。
+		//event.target === request实例对象
+		
+		// var request = window.indexedDB.open('my-database');
+		// var db;
+		// request.onerror = function() {
+		// 	console.log('数据库打开报错');
+		// }
+		// request.onsuccess = function(event) {
+		// 	console.log(event.target);
+		// 	db = request.result;
+		// 	console.log('数据库打开成功');
+		// }
+		// request.onupgradeneeded = function(event) {
+		// 	console.log('数据库升级事件');
+		// 	console.log(event.target);
+		// 	db = event.target.result;
+		// }
+		
+		//新建表格:在indexedDB中没有数据库表.叫做数据库仓库,但作用相当一个数据库表.它使用的createObjectStore创建
+		// var request =window.indexedDB.open('my-database', 3);
+		// var db;
+		// request.onupgradeneeded = function(event) {
+		// 	db = event.target.result;
+		// 	var store;
+		// 	if(!db.objectStoreNames.contains('Users')) {
+		// 		store = db.createObjectStore('Users', {keyPath: 'id',autoIncrement: true});
+		// 	}
+		// 	console.log('创建对象仓库成功');
+		// 	console.log(store);
+		// }
+		
+		// db.createObjectStore 方法接收2个参数，第一个为对象的仓库名(也可以理解我们之前的数据库表名)
+		// 第二个参数为可选参数，值为一个js对象，该对象中的 keyPath属性为主键，autoIncrement 属性为 true，表示主键值自增	。
+		// db.objectStoreNames.contains('Users') 的含义：是否包含该对象仓库名(或叫表名)。如果不包含就创建一个。
+		
+		
+		//创建索引:使用createIndex来创建它的索引.
+		//通过数据对象的某个属性来创建索引,在数据库中进行检索数据的时候,我们只能通过被设置为索引的属性来进行检索
+		var request = window.indexedDB.open('my-database' ,4);
+		var db;
+		request.onupgradeneeded = function(event) {
+			db = event.target.result;
+			var store;
+			if(!db.objectStoreNames.contains('newUsers')) {
+				store = db.createObjectStore('newUsers', {keyPath: 'id', autoIncrement: true});
+			}
+			console.log(store);
+			//创建索引
+			store.createIndex('userIndex','userName',{unique: false});
+			store.createIndex('userEmail','email',{unique: true});
+			console.log('创建索引成功');
+		}
+		
+		
+	</script>
+	
+</html>
